@@ -8,14 +8,15 @@ import keccak256 from "keccak256";
 import abi from "../config/abi.json";
 import { whitelist } from "../config/whitelist";
 import { contractAddress } from "../config";
-import { Token } from "../type";
 
 const Index: NextPage = () => {
   const [walletAddress, setWalletAddress] = React.useState<string>();
   const [provider, setProvider] =
     React.useState<ethers.providers.Web3Provider>();
   const [signer, setSigner] = React.useState<ethers.providers.JsonRpcSigner>();
-  const [tokenId, setTokenId] = React.useState<number>(0);
+
+  const publicSalePrice = "0.02";
+  const privateSalePrice = "0.01";
 
   const connectWallet = async () => {
     if (!provider) {
@@ -37,9 +38,9 @@ const Index: NextPage = () => {
 
     const contract = await new ethers.Contract(contractAddress, abi, signer);
     // const salePrice = contract.publicSalePrice.toString();
-    const salePrice = "0.03";
+
     const mintConfig = {
-      value: ethers.utils.parseEther(salePrice),
+      value: ethers.utils.parseEther(publicSalePrice),
     };
 
     await contract.publicSaleMint(selectedTokenId, mintConfig);
@@ -53,9 +54,9 @@ const Index: NextPage = () => {
 
     const contract = await new ethers.Contract(contractAddress, abi, signer);
     // const salePrice = contract.publicSalePrice.toString();
-    const salePrice = "0.075";
+    const salePrice = "0.01";
     const mintConfig = {
-      value: ethers.utils.parseEther(salePrice),
+      value: ethers.utils.parseEther(privateSalePrice),
     };
 
     const leafNodes = whitelist.map((leaf) => keccak256(leaf));
