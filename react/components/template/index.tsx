@@ -9,7 +9,7 @@ type Props = {
 
   connectWallet: () => void;
   privateMint: (selectedTokenId: number) => void;
-  publicMint: (selectedTokenId: number) => void;
+  publicMint: (selectedTokenId: number[]) => void;
 };
 
 export const Index: React.FC<Props> = (props) => {
@@ -44,7 +44,10 @@ export const Index: React.FC<Props> = (props) => {
           </div>
         </div>
 
-        <div className={styles.card} onClick={() => props.publicMint(27)}>
+        <div
+          className={styles.card}
+          onClick={() => props.publicMint([104, 177])}
+        >
           <h2>publicMint &rarr;</h2>
         </div>
         <div className={styles.card} onClick={() => props.privateMint(14)}>

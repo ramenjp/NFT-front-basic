@@ -15,7 +15,7 @@ const Index: NextPage = () => {
     React.useState<ethers.providers.Web3Provider>();
   const [signer, setSigner] = React.useState<ethers.providers.JsonRpcSigner>();
 
-  const publicSalePrice = "0.02";
+  const publicSalePrice = 0.02;
   const privateSalePrice = "0.01";
 
   const connectWallet = async () => {
@@ -30,7 +30,7 @@ const Index: NextPage = () => {
     }
   };
 
-  const publicMint = React.useCallback(async (selectedTokenId: number) => {
+  const publicMint = React.useCallback(async (selectedTokenIds: number[]) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
 
@@ -40,10 +40,15 @@ const Index: NextPage = () => {
     // const salePrice = contract.publicSalePrice.toString();
 
     const mintConfig = {
-      value: ethers.utils.parseEther(publicSalePrice),
+      value: ethers.utils.parseEther(
+        (publicSalePrice * selectedTokenIds.length).toString()
+      ),
     };
+    console.log("get price : ", publicSalePrice * selectedTokenIds.length);
+    console.log("selectedTokenIds : ", selectedTokenIds);
 
-    await contract.publicSaleMint(selectedTokenId, mintConfig);
+    const tx = await contract.publicSaleMint(selectedTokenIds, mintConfig);
+    console.log("tx :", tx);
   }, []);
 
   const privateMint = React.useCallback(async (selectedTokenId: number) => {
@@ -70,12 +75,13 @@ const Index: NextPage = () => {
     const verify = tree.verify(proof, hashedAddress, rootHash);
     console.log("walletAddress :", walletAddress);
     if (verify) {
-      await contract.privateSaleMint(
+      const tx = await contract.privateSaleMint(
         walletAddress,
         proof,
         selectedTokenId,
         mintConfig
       );
+      console.log("tx :", tx);
     }
   }, []);
 
