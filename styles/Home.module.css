@@ -74,7 +74,6 @@
 }
 
 .card {
-  cursor: pointer;
   margin: 1rem;
   padding: 1.5rem;
   text-align: left;
@@ -114,4 +113,21 @@
     width: 100%;
     flex-direction: column;
   }
+}
+
+@media (prefers-color-scheme: dark) {
+  .card,
+  .footer {
+    border-color: #222;
+  }
+  .code {
+    background: #111;
+  }
+  .logo img {
+    filter: invert(1);
+  }
+}
+
+.images {
+  display: flex;
 }
